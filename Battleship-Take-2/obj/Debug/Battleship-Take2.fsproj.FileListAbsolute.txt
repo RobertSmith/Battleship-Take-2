@@ -1,0 +1,9 @@
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\Battleship_Take2.exe.config
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\Battleship_Take2.XML
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\Battleship_Take2.exe
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\Battleship_Take2.pdb
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\FSharp.Core.dll
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\System.ValueTuple.dll
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\FSharp.Core.xml
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\obj\Debug\Battleship_Take2.exe
+c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\obj\Debug\Battleship_Take2.pdb
