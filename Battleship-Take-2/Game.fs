@@ -51,7 +51,7 @@ module Game =
 
                     if Array.length isNotFree = 0 then
                         for panel in affectedPanels do
-                            let newPanel = { Coordinates = { Row = panel.Coordinates.Row; Col = panel.Coordinates.Col }; Status = ship.Type }
+                            let newPanel = { Coordinates = { Row = panel.Coordinates.Row; Col = panel.Coordinates.Col }; Status = ship.Hull }
                             player.GameBoard <- updateBoard player.GameBoard newPanel
 
                         isFinished <- true
@@ -97,13 +97,13 @@ module Game =
             | _ -> searchingShot player
 
     let private processHit player panel =
-        let ship = List.find (fun (x:Ship) -> x.Type = panel.Status) player.Ships
+        let ship = List.find (fun (x:Ship) -> x.Hull = panel.Status) player.Ships
         let newShip = recordHit ship
-        player.Ships <- updateShips player.Ships newShip
+        player.Ships <- recordHit ship |> updateShips player.Ships
         printfn """%s says: "Hit!" """ player.Name
                 
         match isSunk newShip with
-            | true -> printfn """%s says: "You sunk my %A!" """ player.Name ship.Type
+            | true -> printfn """%s says: "You sunk my %A!" """ player.Name ship.Hull
             | _ -> ()
 
         OccupationType.Hit
