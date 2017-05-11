@@ -7,3 +7,12 @@ c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleshi
 c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\bin\Debug\FSharp.Core.xml
 c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\obj\Debug\Battleship_Take2.exe
 c:\users\rsmith\documents\visual studio 2017\Projects\Battleship-Take2\Battleship-Take2\obj\Debug\Battleship_Take2.pdb
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\Battleship_Take2.XML
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\obj\Debug\Battleship_Take2.exe
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\obj\Debug\Battleship_Take2.pdb
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\Battleship_Take2.exe.config
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\Battleship_Take2.exe
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\Battleship_Take2.pdb
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\FSharp.Core.dll
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\System.ValueTuple.dll
+C:\Users\rsmith\Documents\Visual Studio 2017\Projects\Battleship-Take2\Battleship-Take-2\bin\Debug\FSharp.Core.xml

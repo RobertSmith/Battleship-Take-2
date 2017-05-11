@@ -98,22 +98,28 @@ module Game =
             | 0 -> randomShot player
             | _ -> searchingShot player
 
+    let processHit player panel =
+        let ship = List.find (fun (x:Ship) -> x.Type = panel.Status) player.Ships
+        let newShip = recordHit ship
+        player.Ships <- updateShips player.Ships newShip
+        printfn """%s says: "Hit!" """ player.Name
+                
+        match isSunk newShip with
+            | true -> printfn """%s says: "You sunk my %A!" """ player.Name ship.Type
+            | _ -> ()
+
+        OccupationType.Hit
+
+    let processMiss player = 
+        printfn """%s says: "Miss!" """ player.Name
+        OccupationType.Miss
+
     let processShot player (panel:Panel) =
         let ourPanel = Array.find (fun (x:Panel) -> x.Coordinates.Row = panel.Coordinates.Row && x.Coordinates.Col = panel.Coordinates.Col) player.GameBoard
-            
-        if (isOccupied ourPanel) then
-            let ship = List.find (fun (x:Ship) -> x.Type = ourPanel.Status) player.Ships
-            let newShip = recordHit ship
-            player.Ships <- updateShips player.Ships newShip
-            printfn """%s says: "Hit!" """ player.Name
-                
-            if (isSunk newShip) then
-                printfn """%s says: "You sunk my %A!" """ player.Name ship.Type
-
-            OccupationType.Hit
-        else
-            printfn """%s says: "Miss!" """ player.Name
-            OccupationType.Miss
+        
+        match isOccupied ourPanel with
+            | true -> processHit player ourPanel
+            | _ -> processMiss player
 
     let processShotResult player (panel:Panel) occupationType =
         let mutable ourPanel = Array.find (fun (x:Panel) -> x.Coordinates.Row = panel.Coordinates.Row && x.Coordinates.Col = panel.Coordinates.Col) player.FiringBoard
@@ -139,7 +145,6 @@ module Game =
         while (hasLost player1 = false && hasLost player2 = false) do
             playRound player1 player2
 
-        if (hasLost player1) then
-            printfn "%s has won the game!" player2.Name
-        else
-            printfn "%s has won the game!" player1.Name
+        match hasLost player1 with
+            | true -> printfn "%s has won the game!" player2.Name
+            | false -> printfn "%s has won the game!" player1.Name
