@@ -17,6 +17,5 @@ let main argv =
     printBoards p1
     printBoards p2
 
-
     Console.ReadLine() |> ignore
     0 // return an integer exit code
