@@ -4,7 +4,7 @@ open System
 
 module Board =
 
-    type Coordinates = {
+    type Coordinate = {
         Row: int
         Col: int
     }
@@ -20,7 +20,7 @@ module Board =
         | Miss
 
     type Panel = {
-        Coordinates: Coordinates
+        Coordinate: Coordinate
         Status: OccupationType
     }
 
@@ -31,7 +31,7 @@ module Board =
             | _ -> true
 
     let setStatus panel status = { 
-        Coordinates = panel.Coordinates
+        Coordinate = panel.Coordinate
         Status = status 
     }
 
@@ -51,34 +51,34 @@ module Board =
 
         for x in 1 .. 10 do
             for y in 1 .. 10 do
-                let panel = { Coordinates = { Row = x; Col = y }; Status = OccupationType.Empty }
+                let panel = { Coordinate = { Row = x; Col = y }; Status = OccupationType.Empty }
                 board <- Array.append board [|panel|]
 
         board
 
     let updateBoard board panel =
-        let filteredBoard = Array.filter (fun (x:Panel) -> (x.Coordinates.Row <> panel.Coordinates.Row || x.Coordinates.Col <> panel.Coordinates.Col)) board
+        let filteredBoard = Array.filter (fun (x:Panel) -> (x.Coordinate.Row <> panel.Coordinate.Row || x.Coordinate.Col <> panel.Coordinate.Col)) board
         let newBoard = Array.append filteredBoard [|panel|]
         newBoard
 
     let getOpenRandomPanels board = 
         let isRandomAvailable panel =
-            (panel.Coordinates.Row % 2 = 0 && panel.Coordinates.Col % 2 = 0) || (panel.Coordinates.Row % 2 = 1 && panel.Coordinates.Col % 2 = 1)
+            (panel.Coordinate.Row % 2 = 0 && panel.Coordinate.Col % 2 = 0) || (panel.Coordinate.Row % 2 = 1 && panel.Coordinate.Col % 2 = 1)
     
         Array.filter (fun (x:Panel) -> x.Status = OccupationType.Empty && isRandomAvailable x) board
 
     let getHitNeighbors board =
         let mutable neighbors = Array.empty
-        let getNeighbors coordinates =
-            Array.filter (fun (x:Panel) -> x.Coordinates.Col = coordinates.Col && x.Coordinates.Row = coordinates.Row - 1 || 
-                                            x.Coordinates.Col = coordinates.Col && x.Coordinates.Row = coordinates.Row + 1 ||
-                                            x.Coordinates.Col = coordinates.Col - 1 && x.Coordinates.Row = coordinates.Row ||
-                                            x.Coordinates.Col = coordinates.Col + 1 && x.Coordinates.Row = coordinates.Row) board
+        let getNeighbors coordinate =
+            Array.filter (fun (x:Panel) -> x.Coordinate.Col = coordinate.Col && x.Coordinate.Row = coordinate.Row - 1 || 
+                                            x.Coordinate.Col = coordinate.Col && x.Coordinate.Row = coordinate.Row + 1 ||
+                                            x.Coordinate.Col = coordinate.Col - 1 && x.Coordinate.Row = coordinate.Row ||
+                                            x.Coordinate.Col = coordinate.Col + 1 && x.Coordinate.Row = coordinate.Row) board
 
         let hits = Array.filter (fun (x:Panel) -> x.Status = OccupationType.Hit) board
 
         for hit in hits do
-            neighbors <- Array.append neighbors (getNeighbors hit.Coordinates)
+            neighbors <- Array.append neighbors (getNeighbors hit.Coordinate)
         
         neighbors <- Array.filter (fun (x:Panel) -> x.Status = OccupationType.Empty) neighbors
         Array.distinct neighbors

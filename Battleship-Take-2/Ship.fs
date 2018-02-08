@@ -13,7 +13,6 @@ module Ship =
     let recordHit ship = 
         { Hull = ship.Hull; Width = ship.Width; Hits = ship.Hits + 1 }
 
-
     let isSunk ship =
         ship.Hits >= ship.Width
 

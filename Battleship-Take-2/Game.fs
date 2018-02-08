@@ -43,32 +43,33 @@ module Game =
                 let endRow, endColumn = getEnds startRow startColumn ship.Width
 
                 if (endRow <= 10 && endColumn <= 10) then
-                    let affectedPanels = Array.filter (fun (p:Panel) -> (p.Coordinates.Row >= startRow 
-                                                                    && p.Coordinates.Col >= startColumn 
-                                                                    && p.Coordinates.Row <= endRow 
-                                                                    && p.Coordinates.Col <= endColumn)) player.GameBoard
+                    let affectedPanels = Array.filter (fun (p:Panel) -> (p.Coordinate.Row >= startRow 
+                                                                    && p.Coordinate.Col >= startColumn 
+                                                                    && p.Coordinate.Row <= endRow 
+                                                                    && p.Coordinate.Col <= endColumn)) player.GameBoard
+                    
                     let isNotFree = Array.filter (fun (x:Panel) -> (isOccupied x)) affectedPanels
 
                     if Array.length isNotFree = 0 then
                         for panel in affectedPanels do
-                            let newPanel = { Coordinates = { Row = panel.Coordinates.Row; Col = panel.Coordinates.Col }; Status = ship.Hull }
+                            let newPanel = { Coordinate = { Row = panel.Coordinate.Row; Col = panel.Coordinate.Col }; Status = ship.Hull }
                             player.GameBoard <- updateBoard player.GameBoard newPanel
 
                         isFinished <- true
         player
 
-    let printBoards (player:Player) =
+    let printBoards player =
         printfn "%s" (player.Name)
 
         for x in 1 .. 10 do
             for y in 1 .. 10 do
-                let p = Array.find (fun (z:Panel) -> z.Coordinates.Row = x && z.Coordinates.Col = y) player.GameBoard
+                let p = Array.find (fun (z:Panel) -> z.Coordinate.Row = x && z.Coordinate.Col = y) player.GameBoard
                 Console.Write((getStatus p) + " ");
         
             Console.Write("                 ");
 
             for y in 1 .. 10 do
-                let p = Array.find (fun (z:Panel) -> z.Coordinates.Row = x && z.Coordinates.Col = y) player.FiringBoard
+                let p = Array.find (fun (z:Panel) -> z.Coordinate.Row = x && z.Coordinate.Col = y) player.FiringBoard
                 Console.Write((getStatus p) + " ");
 
             Console.WriteLine()
@@ -79,7 +80,7 @@ module Game =
         let openPanels = getOpenRandomPanels player.FiringBoard
         let panelId = random.Next(Seq.length openPanels)
         let shot = Seq.item panelId openPanels
-        printfn """%s says: "%i, %i" """ player.Name shot.Coordinates.Row shot.Coordinates.Col
+        printfn """%s says: "%i, %i" """ player.Name shot.Coordinate.Row shot.Coordinate.Col
         shot
 
     let private searchingShot player =
@@ -87,7 +88,7 @@ module Game =
         let openPanels = getHitNeighbors player.FiringBoard
         let panelId = random.Next(Seq.length openPanels)
         let shot = Seq.item panelId openPanels
-        printfn """%s says: "%i, %i" """ player.Name shot.Coordinates.Row shot.Coordinates.Col
+        printfn """%s says: "%i, %i" """ player.Name shot.Coordinate.Row shot.Coordinate.Col
         shot
 
     let private fireShot player =
@@ -113,37 +114,34 @@ module Game =
         OccupationType.Miss
 
     let private processShot player (panel:Panel) =
-        let ourPanel = Array.find (fun (x:Panel) -> x.Coordinates.Row = panel.Coordinates.Row && x.Coordinates.Col = panel.Coordinates.Col) player.GameBoard
+        let ourPanel = Array.find (fun (x:Panel) -> x.Coordinate.Row = panel.Coordinate.Row && x.Coordinate.Col = panel.Coordinate.Col) player.GameBoard
         
         match isOccupied ourPanel with
             | true -> processHit player ourPanel
             | _ -> processMiss player
 
     let private processShotResult player (panel:Panel) occupationType =
-        let mutable ourPanel = Array.find (fun (x:Panel) -> x.Coordinates.Row = panel.Coordinates.Row && x.Coordinates.Col = panel.Coordinates.Col) player.FiringBoard
+        let mutable ourPanel = Array.find (fun (x:Panel) -> x.Coordinate.Row = panel.Coordinate.Row && x.Coordinate.Col = panel.Coordinate.Col) player.FiringBoard
         match occupationType with
             | Hit -> ourPanel <- setStatus ourPanel OccupationType.Hit
             | Miss -> ourPanel <- setStatus ourPanel OccupationType.Miss
             | _ -> ourPanel <- setStatus ourPanel OccupationType.Empty
 
         updateBoard player.FiringBoard ourPanel
-
-    let playRound player1 player2 =
-        let coordinates = fireShot player1
-        let result = processShot player2 coordinates
-        player1.FiringBoard <- processShotResult player1 coordinates result
-
-        match hasLost player2 with
-            | false ->  let coordinates = fireShot player2
-                        let result = processShot player1 coordinates
-                        player2.FiringBoard <- processShotResult player2 coordinates result
-            | true -> ()
-                    
-    let playToEnd player1 player2 =
+ 
+    let playGame player1 player2 =
         let message = printfn "%s has won the game!"
 
-        while (hasLost player1 = false && hasLost player2 = false) do
-            playRound player1 player2
+        let rec playRound player1 player2 =
+            let coordinates = fireShot player1
+            let result = processShot player2 coordinates
+            player1.FiringBoard <- processShotResult player1 coordinates result
+
+            match hasLost player2 with
+                | false ->  playRound player2 player1
+                | true -> ()
+
+        playRound player1 player2
 
         match hasLost player1 with
             | true -> message player2.Name

@@ -12,7 +12,7 @@ let main argv =
     printBoards p1
     printBoards p2
 
-    playToEnd p1 p2
+    playGame p1 p2
 
     printBoards p1
     printBoards p2
